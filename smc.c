@@ -557,24 +557,24 @@ kern_return_t SMCPrintFans(void)
     for (i = 0; i < totalFans; i++)
     {
         printf("\nFan #%d:\n", i);
-        sprintf(key, "F%dID", i);
+        sprintf(key, "F%cID", fannum[i]);
         SMCReadKey(key, &val);
         if(val.dataSize > 0) {
             printf("    Fan ID       : %s\n", val.bytes+4);
         }
-        sprintf(key, "F%dAc", i);
+        sprintf(key, "F%cAc", fannum[i]);
         SMCReadKey(key, &val);
         printf("    Actual speed : %.0f\n", getFloatFromVal(val));
-        sprintf(key, "F%dMn", i);
+        sprintf(key, "F%cMn", fannum[i]);
         SMCReadKey(key, &val);
         printf("    Minimum speed: %.0f\n", getFloatFromVal(val));
-        sprintf(key, "F%dMx", i);
+        sprintf(key, "F%cMx", fannum[i]);
         SMCReadKey(key, &val);
         printf("    Maximum speed: %.0f\n", getFloatFromVal(val));
-        sprintf(key, "F%dSf", i);
+        sprintf(key, "F%cSf", fannum[i]);
         SMCReadKey(key, &val);
         printf("    Safe speed   : %.0f\n", getFloatFromVal(val));
-        sprintf(key, "F%dTg", i);
+        sprintf(key, "F%cTg", fannum[i]);
         SMCReadKey(key, &val);
         printf("    Target speed : %.0f\n", getFloatFromVal(val));
         SMCReadKey("FS! ", &val);
@@ -648,6 +648,7 @@ void usage(char* prog)
     printf("    -k <key>   : key to manipulate\n");
     printf("    -l         : list all keys and values\n");
     printf("    -r         : read the value of a key\n");
+	printf("    -p <value> : write the specified integer value to a floating point key\n");
     printf("    -w <value> : write the specified value to a key\n");
     printf("    -v         : version\n");
     printf("\n");
@@ -684,11 +685,12 @@ int main(int argc, char *argv[])
     UInt32Char_t  key = { 0 };
     SMCVal_t      val;
     
-    while ((c = getopt(argc, argv, "fthk:lrw:v")) != -1)
+	while ((c = getopt(argc, argv, "fthk:lp:rw:v")) != -1)
     {
         switch(c)
         {
-            case 'f':
+        
+			case 'f':
                 op = OP_READ_FAN;
                 break;
             case 't':
@@ -707,6 +709,17 @@ int main(int argc, char *argv[])
             case 'v':
                 printf("%s\n", VERSION);
                 return 0;
+                break;
+            case 'p':
+                op = OP_WRITE;
+                {
+                  float fval;
+                  fval = strtof(optarg, NULL);
+
+                  val.dataSize = 4;
+                  memcpy(val.bytes, &fval, sizeof(fval));
+                  memcpy(val.dataType, DATATYPE_FLT, sizeof(val.dataType));
+                }
                 break;
             case 'w':
                 op = OP_WRITE;

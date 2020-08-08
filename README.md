@@ -1,10 +1,7 @@
 # ModernFanControl - An Open Source Fan Control for the Macbook Pro
 
-# ON HOLD: 
-### Since the development of smcFanControl, the SMC keys for controlling the fan have changed, and I haven't been able to find them. If you happen upon this repo and have this information, please let me know (feature request/bug report or email). 
-
 ## Motivation:
-### 1. Old and proprietary code
+### 1. Old and proprietary software
 In terms of fan control software for the newer models of Macbook Pros, the options are quite scarce. Right now, the main two are **smcFanControl** and **Macs Fan Control**. The former hasn't been updated consistenly in nearly a decade, and the backend code it uses to write to the SMC is extremely deprecated, while the former is a paid app with very little technical support. The goal here is to open source a modern version of these types of software that can be supported for future updates of macOS. 
 
 ### 2. The 1200 problem
@@ -15,7 +12,7 @@ Both smcFanControl and Macs Fan control have a minimum fan speed of 1200rpm. Thi
 
 
 ## Example Usage:
-For now, only the `smc.c` has been developed. Navigate to the downloaded folder and run the following:
+For now, only the `smc.c` has been developed, thanks to [smcFanControl](https://github.com/hholtmann/smcFanControl) and especially [this guy](https://github.com/Blaisorblade), who just provided the first working version in a while. Navigate to the downloaded folder and run the following:
 ```shell
 make
 

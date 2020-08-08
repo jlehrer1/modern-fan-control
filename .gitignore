@@ -1,3 +1,8 @@
+# MacOS specific
 .DS_Store
+
+# Compiled c code
 smc.o
 smc
+
+
